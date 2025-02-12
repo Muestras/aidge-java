@@ -1,3 +1,18 @@
+/**
+ * Copyright (C) 2024 NEURALNETICS PTE. LTD.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.aidge.api;
 
 import com.aidge.utils.HttpUtils;
@@ -12,12 +27,6 @@ import javax.json.JsonObject;
 
 import static javax.json.Json.createReader;
 
-/**
- * description
- *
- * @Author zhishan
- * @Date 2025-02-12
- */
 public class VirtualTryOnHttpExample {
     public static void main(String[] args) throws IOException {
         // Your personal data. In the example, we use JVM system property to pass the personal data
