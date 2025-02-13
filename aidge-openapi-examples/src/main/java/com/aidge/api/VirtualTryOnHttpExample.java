@@ -37,7 +37,7 @@ public class VirtualTryOnHttpExample {
 
         // Call virtual try on submit
         String apiName = "/ai/virtual/tryon";
-        String submitRequest = "{\"requestParams\":\"[{\\\"clothesList\\\":[{\\\"imageUrl\\\":\\\"https://ae-pic-a1.aliexpress-media.com/kf/H7588ee37b7674fea814b55f2f516fda1z.jpg\\\",\\\"type\\\":\\\"tops\\\"}],\\\"model\\\":{\\\"base\\\":\\\"General\\\",\\\"gender\\\":\\\"female\\\",\\\"style\\\":\\\"universal_1\\\",\\\"body\\\":\\\"slim\\\"},\\\"viewType\\\":\\\"mixed\\\",\\\"inputQualityDetect\\\":0,\\\"generateCount\\\":4}]\"}"; // e.g. for translation "{\"sourceTextList\":\"[\\\"how are you\\\"]\",\"sourceLanguage\":\"en\",\"targetLanguage\":\"ko\",\"formatType\":\"text\"}"
+        String submitRequest = "{\"requestParams\":\"[{\\\"clothesList\\\":[{\\\"imageUrl\\\":\\\"https://ae-pic-a1.aliexpress-media.com/kf/H7588ee37b7674fea814b55f2f516fda1z.jpg\\\",\\\"type\\\":\\\"tops\\\"}],\\\"model\\\":{\\\"base\\\":\\\"General\\\",\\\"gender\\\":\\\"female\\\",\\\"style\\\":\\\"universal_1\\\",\\\"body\\\":\\\"slim\\\"},\\\"viewType\\\":\\\"mixed\\\",\\\"inputQualityDetect\\\":0,\\\"generateCount\\\":4}]\"}";
         String submitResult = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, submitRequest);
 
         // You can use any other json library to parse result and handle error result
