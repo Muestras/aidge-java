@@ -29,9 +29,9 @@ import static javax.json.Json.createReader;
 
 public class VirtualTryOnHttpExample {
     public static void main(String[] args) throws IOException {
-        // Your personal data. In the example, we use JVM system property to pass the personal data
-        String accessKeyName = System.getProperty("accessKey");  // e.g. 512345
-        String accessKeySecret = System.getProperty("secret");
+        // Your personal data. In this example, we use environment variable to get access key and secret.
+        String accessKeyName = System.getenv("accessKey");  // e.g. 512345
+        String accessKeySecret = System.getenv("secret");
 
         String apiDomain = "api.aidc-ai.com";  // cn-api.aidc-ai.com for cn region
 
