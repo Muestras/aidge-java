@@ -17,57 +17,32 @@ package com.aidge.api;
 
 import com.aidge.utils.HttpUtils;
 
-import javax.json.JsonObject;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import static javax.json.Json.createReader;
+public class ImageTranslationHttpExample {
 
-public class VirtualModelAlternationHttpExample {
-    public static void main(String[] args) throws IOException {
-        // Your personal data. In this sample, we use environment variable to get access key and secret.
-        String accessKeyName = System.getenv("accessKey");  // e.g. 512345
-        String accessKeySecret = System.getenv("secret");
+    public static void main(String[] args) {
+        try {
 
-        String apiDomain = "api.aidc-ai.com";  // cn-api.aidc-ai.com for cn region
+            // Your personal data. In this sample, we use environment variable to get access key and secret.
+            String accessKeyName = System.getenv("accessKey");  // e.g. 512345
+            String accessKeySecret = System.getenv("secret");
 
-        // Call virtual try on submit
-        String apiName = "/ai/virtual/model/generation/batch";
-        String submitRequest = "{\"maskKeepBg\":\"true\",\"dimension\":\"768\",\"age\":\"YOUTH\", \"bgStyle\":\"room\",\"model\":\"WHITE\",\"gender\":\"FEMALE\",\"count\":\"2\",\"imageStyle\":\"realPhoto\",\"imageBase64\":\"\",\"imageBase64\":\"\",\"imageUrl\":\"https://ae01.alicdn.com/kf/H873d9e029746449ca21737fcf595b781X.jpg\"}";
-        String submitResult = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, submitRequest);
+            // Call api
+            String apiName = "/ai/image/translation";
+            String apiDomain = "api.aidc-ai.com"; // e.g. api.aidc-ai.com or cn-api.aidc-ai.com
+            String apiRequest = "{\"imageUrl\":\"https://ae01.alicdn.com/kf/S68468a838ad04cc081a4bd2db32745f1y/M3-Light-emitting-Bluetooth-Headset-Folding-LED-Card-Wireless-Headset-TYPE-C-Charging-Multi-scene-Use.jpg_.webp\",\"sourceLanguage\":\"en\",\"targetLanguage\":\"fr\",\"translatingTextInTheProduct\":\"false\",\"useImageEditor\":\"false\"}";
+            String apiResponse = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, apiRequest);
 
-        // You can use any other json library to parse result and handle error result
-        JsonObject submitResultJson = createReader(new StringReader(submitResult)).readObject();
-        String taskId = Optional.ofNullable(submitResultJson.getJsonObject("data"))
-                .map(i->i.getJsonObject("result"))
-                .map(i->i.getString("taskId"))
-                .orElse(null);
+            // Final result
+            System.out.println(apiResponse);
 
-        // Query task status
-        String queryApiName = "/ai/virtual/model/generation/query";
-        String queryRequest = "{\"taskId\":\"" + taskId + "\"}";
-        String queryResult = null;
-        while (true) {
-            try {
-                queryResult = invokeApi(accessKeyName, accessKeySecret, queryApiName, apiDomain, queryRequest);
-                JsonObject queryResultJson = createReader(new StringReader(queryResult)).readObject();
-                String taskStatus = Optional.ofNullable(queryResultJson.getJsonObject("data")).map(i->i.getString("taskStatus")).orElse(null);
-                if ("finished".equals(taskStatus)) {
-                    break;
-                }
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // Final result for the virtual try on
-        System.out.println(queryResult);
     }
-
 
     private static String invokeApi(String accessKeyName, String accessKeySecret, String apiName, String apiDomain, String data) throws IOException {
         String timestamp = System.currentTimeMillis() + "";
@@ -97,9 +72,10 @@ public class VirtualModelAlternationHttpExample {
                 .replace("[timestamp]", timestamp)
                 .replace("[HmacSHA256 sign]", sign);
 
-        // Add "x-iop-trial": "true" for trial
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
+        // Add "x-iop-trial": "true" for trial
+        // headers.put("x-iop-trial", "true");
 
         // Call api
         String result = HttpUtils.doPost(url, data, headers);

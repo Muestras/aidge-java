@@ -15,59 +15,34 @@
  */
 package com.aidge.api;
 
+
 import com.aidge.utils.HttpUtils;
 
-import javax.json.JsonObject;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import static javax.json.Json.createReader;
+public class ImageElementsRemovalHttpExample {
 
-public class VirtualModelAlternationHttpExample {
-    public static void main(String[] args) throws IOException {
-        // Your personal data. In this sample, we use environment variable to get access key and secret.
-        String accessKeyName = System.getenv("accessKey");  // e.g. 512345
-        String accessKeySecret = System.getenv("secret");
+    public static void main(String[] args) {
+        try {
+            // Your personal data. In this sample, we use environment variable to get access key and secret.
+            String accessKeyName = System.getenv("accessKey");  // e.g. 512345
+            String accessKeySecret = System.getenv("secret");
 
-        String apiDomain = "api.aidc-ai.com";  // cn-api.aidc-ai.com for cn region
+            // Call api
+            String apiName = "/ai/image/removal";
+            String apiDomain = "api.aidc-ai.com"; // e.g. api.aidc-ai.com or cn-api.aidc-ai.com
+            String apiRequest = "{\"image_url\":\"https://ae01.alicdn.com/kf/Sa78257f1d9a34dad8ee494178db12ec8l.jpg\",\"non_object_remove_elements\":\"[1,2,3,4]\",\"object_remove_elements\":\"[1,2,3,4]\",\"mask\":\"474556 160 475356 160 476156 160 476956 160 477756 160 478556 160 479356 160 480156 160 480956 160 481756 160 482556 160 483356 160 484156 160 484956 160 485756 160 486556 160 487356 160 488156 160 488956 160 489756 160 490556 160 491356 160 492156  160\"}";
+            String apiResponse = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, apiRequest);
 
-        // Call virtual try on submit
-        String apiName = "/ai/virtual/model/generation/batch";
-        String submitRequest = "{\"maskKeepBg\":\"true\",\"dimension\":\"768\",\"age\":\"YOUTH\", \"bgStyle\":\"room\",\"model\":\"WHITE\",\"gender\":\"FEMALE\",\"count\":\"2\",\"imageStyle\":\"realPhoto\",\"imageBase64\":\"\",\"imageBase64\":\"\",\"imageUrl\":\"https://ae01.alicdn.com/kf/H873d9e029746449ca21737fcf595b781X.jpg\"}";
-        String submitResult = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, submitRequest);
+            // Final result
+            System.out.println(apiResponse);
 
-        // You can use any other json library to parse result and handle error result
-        JsonObject submitResultJson = createReader(new StringReader(submitResult)).readObject();
-        String taskId = Optional.ofNullable(submitResultJson.getJsonObject("data"))
-                .map(i->i.getJsonObject("result"))
-                .map(i->i.getString("taskId"))
-                .orElse(null);
-
-        // Query task status
-        String queryApiName = "/ai/virtual/model/generation/query";
-        String queryRequest = "{\"taskId\":\"" + taskId + "\"}";
-        String queryResult = null;
-        while (true) {
-            try {
-                queryResult = invokeApi(accessKeyName, accessKeySecret, queryApiName, apiDomain, queryRequest);
-                JsonObject queryResultJson = createReader(new StringReader(queryResult)).readObject();
-                String taskStatus = Optional.ofNullable(queryResultJson.getJsonObject("data")).map(i->i.getString("taskStatus")).orElse(null);
-                if ("finished".equals(taskStatus)) {
-                    break;
-                }
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // Final result for the virtual try on
-        System.out.println(queryResult);
     }
-
 
     private static String invokeApi(String accessKeyName, String accessKeySecret, String apiName, String apiDomain, String data) throws IOException {
         String timestamp = System.currentTimeMillis() + "";
@@ -97,9 +72,11 @@ public class VirtualModelAlternationHttpExample {
                 .replace("[timestamp]", timestamp)
                 .replace("[HmacSHA256 sign]", sign);
 
-        // Add "x-iop-trial": "true" for trial
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
+        // Add "x-iop-trial": "true" for trial
+        // headers.put("x-iop-trial", "true");
+
 
         // Call api
         String result = HttpUtils.doPost(url, data, headers);
