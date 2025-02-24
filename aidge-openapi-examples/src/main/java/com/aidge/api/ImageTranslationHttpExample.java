@@ -32,7 +32,8 @@ public class ImageTranslationHttpExample {
 
             // Call api
             String apiName = "/ai/image/translation";
-            String apiDomain = "api.aidc-ai.com"; // e.g. api.aidc-ai.com or cn-api.aidc-ai.com
+            String apiDomain = "api.aidc-ai.com";  // for api purchased on global site
+            // String apiDomain = "cn-api.aidc-ai.com";  // 中文站购买的API请使用此域名 (for api purchased on chinese site)
             String apiRequest = "{\"imageUrl\":\"https://ae01.alicdn.com/kf/S68468a838ad04cc081a4bd2db32745f1y/M3-Light-emitting-Bluetooth-Headset-Folding-LED-Card-Wireless-Headset-TYPE-C-Charging-Multi-scene-Use.jpg_.webp\",\"sourceLanguage\":\"en\",\"targetLanguage\":\"fr\",\"translatingTextInTheProduct\":\"false\",\"useImageEditor\":\"false\"}";
             String apiResponse = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, apiRequest);
 

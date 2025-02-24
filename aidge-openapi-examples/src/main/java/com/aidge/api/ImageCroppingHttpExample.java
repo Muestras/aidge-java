@@ -32,7 +32,8 @@ public class ImageCroppingHttpExample {
 
             // Call api
             String apiName = "/ai/image/cropping";
-            String apiDomain = "api.aidc-ai.com"; // e.g. api.aidc-ai.com or cn-api.aidc-ai.com
+            String apiDomain = "api.aidc-ai.com";  // for api purchased on global site
+            // String apiDomain = "cn-api.aidc-ai.com";  // 中文站购买的API请使用此域名 (for api purchased on chinese site)
             String apiRequest = "{\"imageBase64\":\"\",\"targetHeight\":\"1000\",\"imageUrl\":\"https://ae01.alicdn.com/kf/S99cb7e78ba2b46cc9134b87c323bb617x.png\",\"targetWidth\":\"1000\"}";
             String apiResponse = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, apiRequest);
 

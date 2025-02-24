@@ -32,7 +32,8 @@ public class VirtualModelAlternationHttpExample {
         String accessKeyName = System.getenv("accessKey");  // e.g. 512345
         String accessKeySecret = System.getenv("secret");
 
-        String apiDomain = "api.aidc-ai.com";  // cn-api.aidc-ai.com for cn region
+        String apiDomain = "api.aidc-ai.com";  // for api purchased on global site
+        // String apiDomain = "cn-api.aidc-ai.com";  // 中文站购买的API请使用此域名 (for api purchased on chinese site)
 
         // Call virtual try on submit
         String apiName = "/ai/virtual/model/generation/batch";

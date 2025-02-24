@@ -30,7 +30,8 @@ public class ImageBackGroundRemovalHttpExample {
 
             // Call api
             String apiName = "/ai/image/cut/out";
-            String apiDomain = "api.aidc-ai.com"; // cn-api.aidc-ai.com for cn region
+            String apiDomain = "api.aidc-ai.com";  // for api purchased on global site
+            // String apiDomain = "cn-api.aidc-ai.com";  // 中文站购买的API请使用此域名 (for api purchased on chinese site)
             String apiRequest = "{\"imageUrl\":\"https://ae01.alicdn.com/kf/Sa78257f1d9a34dad8ee494178db12ec8l.jpg\",\"backGroundType\":\"WHITE_BACKGROUND\"}";
             String apiResponse = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, apiRequest);
 

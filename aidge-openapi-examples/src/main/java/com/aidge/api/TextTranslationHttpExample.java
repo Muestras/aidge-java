@@ -30,7 +30,8 @@ public class TextTranslationHttpExample {
 
             // Call api
             String apiName = "/ai/text/marco/translator";
-            String apiDomain = "api.aidc-ai.com"; // e.g. api.aidc-ai.com or cn-api.aidc-ai.com
+            String apiDomain = "api.aidc-ai.com";  // for api purchased on global site
+            // String apiDomain = "cn-api.aidc-ai.com";  // 中文站购买的API请使用此域名 (for api purchased on chinese site)
             String apiRequest = "{\"text\":\"[\\\"Pen for iPad, 13 mins Fast Charging Stylus with Palm Rejection, Tilt Sensitivity, Compatible with 2018-2022 iPad Air 3/4/5, iPad Mini 5/6(Black)\\\"]\",\"sourceLanguage\":\"en\",\"targetLanguage\":\"ko\",\"formatType\":\"text\"}";
             String apiResponse = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, apiRequest);
 

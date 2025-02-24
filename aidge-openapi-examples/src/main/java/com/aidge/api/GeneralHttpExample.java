@@ -29,7 +29,8 @@ public class GeneralHttpExample {
         String accessKeyName = "your api key name";  // e.g. 512345
         String accessKeySecret = "your api key secret";
         String apiName = "api name";  // e.g. /ai/text/translation/and/polishment
-        String apiDomain = "api domain";  // e.g. api.aidc-ai.com or cn-api.aidc-ai.com
+        String apiDomain = "api.aidc-ai.com";  // for api purchased on global site
+        // String apiDomain = "cn-api.aidc-ai.com";  // 中文站购买的API请使用此域名 (for api purchased on chinese site)
         String data = "{your api request params}"; // e.g. for translation "{\"sourceTextList\":\"[\\\"how are you\\\"]\",\"sourceLanguage\":\"en\",\"targetLanguage\":\"ko\",\"formatType\":\"text\"}"
 
         // Calculate sign

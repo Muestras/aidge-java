@@ -32,7 +32,8 @@ public class ImageUpscalingHttpExample {
 
             // Call api
             String apiName = "/ai/super/resolution";
-            String apiDomain = "api.aidc-ai.com"; // e.g. api.aidc-ai.com or cn-api.aidc-ai.com
+            String apiDomain = "api.aidc-ai.com";  // for api purchased on global site
+            // String apiDomain = "cn-api.aidc-ai.com";  // 中文站购买的API请使用此域名 (for api purchased on chinese site)
             String apiRequest = "{\"imageUrl\":\"https://ae-pic-a1.aliexpress-media.com/kf/Sac81d99346924838bd15689923c5f976E.jpg_960x960q75.jpg\",\"upscaleFactor\":4}";
             String apiResponse = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, apiRequest);
 
