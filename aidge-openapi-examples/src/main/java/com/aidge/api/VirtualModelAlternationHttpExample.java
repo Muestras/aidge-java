@@ -17,45 +17,82 @@ package com.aidge.api;
 
 import com.aidge.utils.HttpUtils;
 
-import javax.json.JsonObject;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-
-import static javax.json.Json.createReader;
+import org.json.JSONObject;
 
 public class VirtualModelAlternationHttpExample {
+
+    static class ApiConfig{
+        /**
+         * The name and secret of your api key. e.g. 512345 and S4etzZ73nF08vOXVhk3wZjIaLSHw0123
+         * In this sample, we use environment variable to get access key and secret.
+         */
+        public static String accessKeyName = System.getenv("accessKey");
+        public static String accessKeySecret = System.getenv("secret");
+
+        /**
+         * The domain of the API.
+         * for api purchased on global site. set apiDomain to "api.aidc-ai.com"
+         * 中文站购买的API请使用"cn-api.aidc-ai.com"域名 (for api purchased on chinese site) set apiDomain to "cn-api.aidc-ai.com"
+         */
+        public static String apiDomain = "api.aidc-ai.com";
+        // public static String apiDomain = "cn-api.aidc-ai.com";
+
+        /**
+         * We offer trial quota to help you familiarize and test how to use the Aidge API in your account
+         * To use trial quota, please set useTrialResource to true
+         * If you set useTrialResource to false before you purchase the API
+         * You will receive "Sorry, your calling resources have been exhausted........"
+         * 我们为您的账号提供一定数量的免费试用额度可以试用任何API。请将useTrialResource设置为true用于试用。
+         * 如设置为false，且您未购买该API，将会收到"Sorry, your calling resources have been exhausted........."的错误提示
+         */
+        public static boolean useTrialResource = false;
+        // public static boolean useTrialResource = true;
+    }
     public static void main(String[] args) throws IOException {
-        // Your personal data. In this sample, we use environment variable to get access key and secret.
-        String accessKeyName = System.getenv("accessKey");  // e.g. 512345
-        String accessKeySecret = System.getenv("secret");
-
-        String apiDomain = "api.aidc-ai.com";  // for api purchased on global site
-        // String apiDomain = "cn-api.aidc-ai.com";  // 中文站购买的API请使用此域名 (for api purchased on chinese site)
-
         // Call virtual try on submit
         String apiName = "/ai/virtual/model/generation/batch";
-        String submitRequest = "{\"maskKeepBg\":\"true\",\"dimension\":\"768\",\"age\":\"YOUTH\", \"bgStyle\":\"room\",\"model\":\"WHITE\",\"gender\":\"FEMALE\",\"count\":\"2\",\"imageStyle\":\"realPhoto\",\"imageBase64\":\"\",\"imageBase64\":\"\",\"imageUrl\":\"https://ae01.alicdn.com/kf/H873d9e029746449ca21737fcf595b781X.jpg\"}";
-        String submitResult = invokeApi(accessKeyName, accessKeySecret, apiName, apiDomain, submitRequest);
+
+        /*
+         * Create API request using JSONObject
+         * You can use any other json library to build parameters
+         * Note: the array type parameter needs to be converted to a string
+         */
+        JSONObject submitParams = new JSONObject()
+                .put("maskKeepBg", "true")
+                .put("dimension", "768")
+                .put("age", "YOUTH")
+                .put("bgStyle", "room")
+                .put("model", "WHITE")
+                .put("gender", "FEMALE")
+                .put("count", "2")
+                .put("imageStyle", "realPhoto")
+                .put("imageBase64", "")
+                .put("imageUrl", "https://ae01.alicdn.com/kf/H873d9e029746449ca21737fcf595b781X.jpg");
+
+        String submitRequest = submitParams.toString();
+
+//        String submitRequest = "{\"maskKeepBg\":\"true\",\"dimension\":\"768\",\"age\":\"YOUTH\", \"bgStyle\":\"room\",\"model\":\"WHITE\",\"gender\":\"FEMALE\",\"count\":\"2\",\"imageStyle\":\"realPhoto\",\"imageBase64\":\"\",\"imageUrl\":\"https://ae01.alicdn.com/kf/H873d9e029746449ca21737fcf595b781X.jpg\"}";
+        String submitResult = invokeApi(apiName, submitRequest);
 
         // You can use any other json library to parse result and handle error result
-        JsonObject submitResultJson = createReader(new StringReader(submitResult)).readObject();
-        String taskId = Optional.ofNullable(submitResultJson.getJsonObject("data"))
-                .map(i->i.getJsonObject("result"))
-                .map(i->i.getString("taskId"))
-                .orElse(null);
+        JSONObject submitResultJson = new JSONObject(submitResult);
+        String taskId = submitResultJson.optJSONObject("data") != null ?
+                submitResultJson.getJSONObject("data").optString("taskId") : null;
 
         // Query task status
         String queryApiName = "/ai/virtual/model/generation/query";
-        String queryRequest = "{\"taskId\":\"" + taskId + "\"}";
+        JSONObject queryParams = new JSONObject().put("taskId", taskId);
+        String queryRequest = queryParams.toString();
         String queryResult = null;
         while (true) {
             try {
-                queryResult = invokeApi(accessKeyName, accessKeySecret, queryApiName, apiDomain, queryRequest);
-                JsonObject queryResultJson = createReader(new StringReader(queryResult)).readObject();
-                String taskStatus = Optional.ofNullable(queryResultJson.getJsonObject("data")).map(i->i.getString("taskStatus")).orElse(null);
+                queryResult = invokeApi(queryApiName, queryRequest);
+                JSONObject queryResultJson = new JSONObject(queryResult);
+                String taskStatus = queryResultJson.optJSONObject("data") != null ?
+                        queryResultJson.getJSONObject("data").optString("taskStatus") : null;
                 if ("finished".equals(taskStatus)) {
                     break;
                 }
@@ -70,16 +107,16 @@ public class VirtualModelAlternationHttpExample {
     }
 
 
-    private static String invokeApi(String accessKeyName, String accessKeySecret, String apiName, String apiDomain, String data) throws IOException {
+    private static String invokeApi(String apiName, String data) throws IOException {
         String timestamp = System.currentTimeMillis() + "";
 
         // Calculate sign
         StringBuilder sign = new StringBuilder();
         try {
-            javax.crypto.SecretKey secretKey = new javax.crypto.spec.SecretKeySpec(accessKeySecret.getBytes(java.nio.charset.StandardCharsets.UTF_8), "HmacSHA256");
+            javax.crypto.SecretKey secretKey = new javax.crypto.spec.SecretKeySpec(ApiConfig.accessKeySecret.getBytes(java.nio.charset.StandardCharsets.UTF_8), "HmacSHA256");
             javax.crypto.Mac mac = javax.crypto.Mac.getInstance(secretKey.getAlgorithm());
             mac.init(secretKey);
-            byte[] bytes = mac.doFinal((accessKeySecret + timestamp).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            byte[] bytes = mac.doFinal((ApiConfig.accessKeySecret + timestamp).getBytes(java.nio.charset.StandardCharsets.UTF_8));
             for (int i = 0; i < bytes.length; i++) {
                 String hex = Integer.toHexString(bytes[i] & 0xFF);
                 if (hex.length() == 1) {
@@ -92,15 +129,18 @@ public class VirtualModelAlternationHttpExample {
         }
 
         String url = "https://[api domain]/rest[api name]?partner_id=aidge&sign_method=sha256&sign_ver=v2&app_key=[you api key name]&timestamp=[timestamp]&sign=[HmacSHA256 sign]";
-        url = url.replace("[api domain]", apiDomain)
+        url = url.replace("[api domain]", ApiConfig.apiDomain)
                 .replace("[api name]", apiName)
-                .replace("[you api key name]", accessKeyName)
+                .replace("[you api key name]", ApiConfig.accessKeyName)
                 .replace("[timestamp]", timestamp)
                 .replace("[HmacSHA256 sign]", sign);
 
-        // Add "x-iop-trial": "true" for trial
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
+        if (ApiConfig.useTrialResource) {
+            // Add "x-iop-trial": "true" for trial
+            headers.put("x-iop-trial", "true");
+        }
 
         // Call api
         String result = HttpUtils.doPost(url, data, headers);
