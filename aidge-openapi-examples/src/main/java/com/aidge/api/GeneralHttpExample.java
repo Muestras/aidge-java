@@ -36,8 +36,7 @@ public class GeneralHttpExample {
          * for api purchased on global site. set apiDomain to "api.aidc-ai.com"
          * 中文站购买的API请使用"cn-api.aidc-ai.com"域名 (for api purchased on chinese site) set apiDomain to "cn-api.aidc-ai.com"
          */
-        public static String apiDomain = "api.aidc-ai.com";
-        // public static String apiDomain = "cn-api.aidc-ai.com";
+        public static String apiDomain = "api domain";
 
         /**
          * We offer trial quota to help you familiarize and test how to use the Aidge API in your account
@@ -47,8 +46,7 @@ public class GeneralHttpExample {
          * 我们为您的账号提供一定数量的免费试用额度可以试用任何API。请将useTrialResource设置为true用于试用。
          * 如设置为false，且您未购买该API，将会收到"Sorry, your calling resources have been exhausted........."的错误提示
          */
-        public static boolean useTrialResource = false;
-        // public static boolean useTrialResource = true;
+        public static boolean useTrialResource = true/false;
     }
 
     public static void main(String[] args) throws IOException {
