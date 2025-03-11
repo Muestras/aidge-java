@@ -67,7 +67,6 @@ public class ImageElementsRemovalHttpExample {
             apiRequestJson.put("image_url", "https://ae01.alicdn.com/kf/Sa78257f1d9a34dad8ee494178db12ec8l.jpg");
             apiRequestJson.put("non_object_remove_elements", new JSONArray(new int[]{1, 2, 3, 4}).toString());
             apiRequestJson.put("object_remove_elements", new JSONArray(new int[]{1, 2, 3, 4}).toString());
-            apiRequestJson.put("mask", "474556 160 475356 160 476156 160 476956 160 477756 160 478556 160 479356 160 480156 160 480956 160 481756 160 482556 160 483356 160 484156 160 484956 160 485756 160 486556 160 487356 160 488156 160 488956 160 489756 160 490556 160 491356 160 492156 160");
 
             String apiRequest = apiRequestJson.toString();
 
