@@ -62,6 +62,8 @@ public class VirtualTryOnHttpExample {
         JSONObject params = new JSONObject()
                 .put("clothesList", new JSONArray()
                         .put(new JSONObject()
+                                // URL of the clothing image should be accessible from the public network.
+                                // The resolution should be greater than 500x500 pixels and up to a maximum of 3000x3000 pixels
                                 .put("imageUrl", "https://ae-pic-a1.aliexpress-media.com/kf/H7588ee37b7674fea814b55f2f516fda1z.jpg")
                                 .put("type", "tops"))
                 )
