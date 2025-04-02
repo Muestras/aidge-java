@@ -16,27 +16,19 @@
 
 package com.aidge.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
+import javax.net.ssl.*;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public abstract class HttpUtils {
     private static final String DEFAULT_CHARSET = "UTF-8";
@@ -49,7 +41,7 @@ public abstract class HttpUtils {
     public static String doPost(String url, String body, Map<String, String> headers) throws IOException {
         String ctype = "application/json;charset=" + DEFAULT_CHARSET;
         byte[] content = body.getBytes(DEFAULT_CHARSET);
-        return _doPost(url, ctype, content, headers, 15000, 30000, (Proxy)null);
+        return _doPost(url, ctype, content, headers, 15000, 30000, null);
     }
 
     private static String _doPost(String url, String ctype, byte[] content, Map<String, String> headers, int connectTimeout, int readTimeout, Proxy proxy) throws IOException {
@@ -73,6 +65,23 @@ public abstract class HttpUtils {
                 conn.disconnect();
             }
 
+        }
+
+        return rsp;
+    }
+
+    public static String doGet(String fullUrl, Map<String, String> headerParams) throws IOException {
+        HttpURLConnection conn = null;
+        String rsp = null;
+        try {
+            conn = getConnection(new URL(fullUrl), "GET", "application/x-www-form-urlencoded;charset=UTF-8", headerParams, null);
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(30000);
+            rsp = getResponseAsString(conn);
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
 
         return rsp;
