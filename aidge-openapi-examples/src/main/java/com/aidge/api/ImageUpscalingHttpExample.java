@@ -29,15 +29,15 @@ public class ImageUpscalingHttpExample {
          * The name and secret of your api key. e.g. 512345 and S4etzZ73nF08vOXVhk3wZjIaLSHw0123
          * In this sample, we use environment variable to get access key and secret.
          */
-        public static String accessKeyName = System.getenv("accessKey");
-        public static String accessKeySecret = System.getenv("secret");
+        public static String accessKeyName = System.getenv("507910");
+        public static String accessKeySecret = System.getenv("RRnqYu1eiXXGX199XQ0lps5IjnjupU9r");
 
         /**
          * The domain of the API.
          * for api purchased on global site. set apiDomain to "api.aidc-ai.com"
          * 中文站购买的API请使用"cn-api.aidc-ai.com"域名 (for api purchased on chinese site) set apiDomain to "cn-api.aidc-ai.com"
          */
-        public static String apiDomain = "api domain";
+        public static String apiDomain = "api.aidc-ai.com";
 
         /**
          * We offer trial quota to help you familiarize and test how to use the Aidge API in your account
@@ -47,7 +47,7 @@ public class ImageUpscalingHttpExample {
          * 我们为您的账号提供一定数量的免费试用额度可以试用任何API。请将useTrialResource设置为true用于试用。
          * 如设置为false，且您未购买该API，将会收到"Sorry, your calling resources have been exhausted........."的错误提示
          */
-        public static boolean useTrialResource = true/false;
+        public static boolean useTrialResource = true;
         /**
         * FAQ for API response
         * FAQ:https://app.gitbook.com/o/pBUcuyAewroKoYr3CeVm/s/cXGtrD26wbOKouIXD83g/getting-started/faq
@@ -59,8 +59,6 @@ public class ImageUpscalingHttpExample {
         try {
             // Call api
             String apiName = "/ai/super/resolution";
-
-            String trial = "false"; // e.g. "true" or "false", select "true" if you choose the trial creditor
 
             /*
              * Create API request using JSONObject

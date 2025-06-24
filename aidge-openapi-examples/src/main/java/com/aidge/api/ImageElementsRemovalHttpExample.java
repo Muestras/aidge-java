@@ -50,7 +50,7 @@ public class ImageElementsRemovalHttpExample {
          * 我们为您的账号提供一定数量的免费试用额度可以试用任何API。请将useTrialResource设置为true用于试用。
          * 如设置为false，且您未购买该API，将会收到"Sorry, your calling resources have been exhausted........."的错误提示
          */
-        public static boolean useTrialResource = true/false;
+        public static boolean useTrialResource = true;
         /**
         * FAQ for API response
         * FAQ:https://app.gitbook.com/o/pBUcuyAewroKoYr3CeVm/s/cXGtrD26wbOKouIXD83g/getting-started/faq
